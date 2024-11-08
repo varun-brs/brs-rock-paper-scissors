@@ -14,9 +14,6 @@ const scoreboard = {
   computer: 0,
 };
 
-let chathams_blue = "#1A4B84";
-
-// check player names and show the game board if true
 const gameStartListener = () => {
   if (playerNameInput.value === "") {
     alert("Please enter player name");
@@ -27,7 +24,7 @@ const gameStartListener = () => {
     playerNameInput.value.charAt(0).toUpperCase() +
     playerNameInput.value.slice(1);
   gameBoard.style.display = "flex";
-  // Show score
+
   score.innerHTML = `
    <div class="row">
      <div class="col-12 d-flex align-items-center mb-4">
@@ -42,30 +39,26 @@ const gameStartListener = () => {
   startGameBtn.style.display = "none";
 };
 
-// Init the event listener
 const gameStartButton = startGameBtn.addEventListener(
   "click",
   gameStartListener
 );
 
-// Init Game
 function initGame() {
   gameBoard.style.display = "none";
 }
 
 initGame();
 
-// Play game
 function playGame(e) {
   restart.style.display = "inline-block";
-  const playerChoice = e.target.id; // rock, paper, scissor
+  const playerChoice = e.target.id;
   console.log(playerChoice);
   const computerChoice = getComputerChoice();
   const winner = getWinner(playerChoice, computerChoice);
   showWinner(winner, computerChoice);
 }
 
-// Get computers choice
 function getComputerChoice() {
   const randomNumber = Math.random();
   if (randomNumber < 0.34) {
@@ -77,7 +70,6 @@ function getComputerChoice() {
   }
 }
 
-// Get game winner
 function getWinner(player, computer) {
   if (player === computer) {
     return "draw";
@@ -102,13 +94,10 @@ function getWinner(player, computer) {
   }
 }
 
-// decide winner
 function showWinner(winner, computerChoice) {
   console.log(computerChoice);
   if (winner === "player") {
-    // Inc player score
     scoreboard.player++;
-    // Show modal result
     result.innerHTML = `
       <h1 class="text-win">You Win</h1>
       <img id="rock" class="choice" src="./assets/img/${computerChoice}.jpg" alt="rock"  width="150">
@@ -117,9 +106,7 @@ function showWinner(winner, computerChoice) {
       }</strong></p>
     `;
   } else if (winner === "computer") {
-    // Inc computer score
     scoreboard.computer++;
-    // Show modal result
     result.innerHTML = `
       <h1 class="text-lose">You Lose</h1>
       <img  class="choice" src="./assets/img/${computerChoice}.jpg" alt="rock" width="150">
@@ -136,7 +123,7 @@ function showWinner(winner, computerChoice) {
       }</strong></p>
     `;
   }
-  // Show score
+
   score.innerHTML = `
   <div class="row">
   <div class="col-12 d-flex align-items-center mb-4">
@@ -151,7 +138,6 @@ function showWinner(winner, computerChoice) {
   modal.style.display = "block";
 }
 
-// Restart game
 function restartGame() {
   scoreboard.player = 0;
   scoreboard.computer = 0;
@@ -161,21 +147,12 @@ function restartGame() {
   startGameBtn.style.display = "block";
 }
 
-// Clear modal
 function clearModal(e) {
   if (e.target == modal) {
     modal.style.display = "none";
   }
 }
 
-// Event listeners
 choices.forEach((choice) => choice.addEventListener("click", playGame));
 window.addEventListener("click", clearModal);
 restart.addEventListener("click", restartGame);
-
-// Change Theme
-function setTheme(theme) {
-  document.documentElement.style.setProperty("--primary-color", theme);
-  localStorage.setItem("movie-theme", theme);
-}
-setTheme(localStorage.getItem("movie-theme") || chathams_blue);
